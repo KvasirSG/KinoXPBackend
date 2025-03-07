@@ -22,17 +22,13 @@ public class Show {
     @Column(nullable = false)
     private LocalDateTime showTime;
 
-    @Column(nullable = false)
-    private int availableSeats;
-
     // Constructors
     public Show() {}
 
-    public Show(Movie movie, Theatre theatre, LocalDateTime showTime, int availableSeats) {
+    public Show(Movie movie, Theatre theatre, LocalDateTime showTime) {
         this.movie = movie;
         this.theatre = theatre;
         this.showTime = showTime;
-        this.availableSeats = availableSeats;
     }
 
     // Getters and Setters
@@ -66,14 +62,6 @@ public class Show {
 
     public void setShowTime(LocalDateTime showTime) {
         this.showTime = showTime;
-    }
-
-    public int getAvailableSeats() {
-        return availableSeats;
-    }
-
-    public void setAvailableSeats(int availableSeats) {
-        this.availableSeats = availableSeats;
     }
 }
 
