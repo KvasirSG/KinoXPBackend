@@ -2,6 +2,7 @@ package com.example.kinoxpbackend.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "bookings")
@@ -22,8 +23,13 @@ public class Booking {
     @Column(nullable = false)
     private LocalDateTime bookingDate;
 
-    @Column(nullable = false)
-    private int numberOfSeats;
+    @ManyToMany
+    @JoinTable(
+            name = "booking_seats",
+            joinColumns = @JoinColumn(name = "booking_id"),
+            inverseJoinColumns = @JoinColumn(name = "seat_id")
+    )
+    private Set<Seat> seats;
 
     @Column(nullable = false)
     private double totalPrice;
@@ -34,11 +40,11 @@ public class Booking {
     // Constructors
     public Booking() {}
 
-    public Booking(Customer customer, Show show, LocalDateTime bookingDate, int numberOfSeats, double totalPrice, String status) {
+    public Booking(Customer customer, Show show, LocalDateTime bookingDate, Set<Seat> seats, double totalPrice, String status) {
         this.customer = customer;
         this.show = show;
         this.bookingDate = bookingDate;
-        this.numberOfSeats = numberOfSeats;
+        this.seats = seats;
         this.totalPrice = totalPrice;
         this.status = status;
     }
@@ -76,12 +82,12 @@ public class Booking {
         this.bookingDate = bookingDate;
     }
 
-    public int getNumberOfSeats() {
-        return numberOfSeats;
+    public Set<Seat> getSeats() {
+        return seats;
     }
 
-    public void setNumberOfSeats(int numberOfSeats) {
-        this.numberOfSeats = numberOfSeats;
+    public void setSeats(Set<Seat> seats) {
+        this.seats = seats;
     }
 
     public double getTotalPrice() {
@@ -100,4 +106,5 @@ public class Booking {
         this.status = status;
     }
 }
+
 

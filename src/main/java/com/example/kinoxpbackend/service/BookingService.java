@@ -3,9 +3,10 @@ package com.example.kinoxpbackend.service;
 import com.example.kinoxpbackend.model.Booking;
 import com.example.kinoxpbackend.repository.BookingRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingService {
@@ -33,6 +34,13 @@ public class BookingService {
     }
 
     public Booking createBooking(Booking booking) {
+        Set<Long> seatIds = booking.getSeats().stream().map(seat -> seat.getSeatId()).collect(Collectors.toSet());
+
+        // Check if seats are already booked for this show
+        if (bookingRepository.existsByShow_ShowIdAndSeats_SeatIdIn(booking.getShow().getShowId(), seatIds)) {
+            throw new RuntimeException("One or more seats are already booked for this show.");
+        }
+
         return bookingRepository.save(booking);
     }
 
