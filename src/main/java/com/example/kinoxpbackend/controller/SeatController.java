@@ -47,8 +47,8 @@ public class SeatController {
     }
 
     @GetMapping("/availability/{showId}")
-    public ResponseEntity<Map<String, List<Seat>>> getSeatsAvailabilityForShow(@PathVariable Long showId) {
-        Map<String, List<Seat>> seatAvailability = seatService.getSeatsAvailabilityForShow(showId);
+    public ResponseEntity<Map<String, List<Seat>>> getSeatAvailabilityForShow(@PathVariable Long showId) {
+        Map<String, List<Seat>> seatAvailability = seatService.getSeatAvailabilityForShow(showId);
         return ResponseEntity.ok(seatAvailability);
     }
 }

@@ -11,22 +11,26 @@ public class Seat {
     private Long seatId;
 
     @ManyToOne
-    @JoinColumn(name = "theatre_id", nullable = false)
-    private Theatre theatre;
+    @JoinColumn(name = "show_id", nullable = false)
+    private Show show;
 
-    @Column(name = "row_index", nullable = false)  // 🔹 Renamed from "row_number"
+    @Column(nullable = false)
     private int rowIndex;
 
     @Column(nullable = false)
     private int seatNumber;
 
+    @Column(nullable = false)
+    private boolean isBooked = false; // New field to track if the seat is booked
+
     // Constructors
     public Seat() {}
 
-    public Seat(Theatre theatre, int rowIndex, int seatNumber) {
-        this.theatre = theatre;
+    public Seat(Show show, int rowIndex, int seatNumber) {
+        this.show = show;
         this.rowIndex = rowIndex;
         this.seatNumber = seatNumber;
+        this.isBooked = false;
     }
 
     // Getters and Setters
@@ -38,12 +42,12 @@ public class Seat {
         this.seatId = seatId;
     }
 
-    public Theatre getTheatre() {
-        return theatre;
+    public Show getShow() {
+        return show;
     }
 
-    public void setTheatre(Theatre theatre) {
-        this.theatre = theatre;
+    public void setShow(Show show) {
+        this.show = show;
     }
 
     public int getRowIndex() {
@@ -61,5 +65,14 @@ public class Seat {
     public void setSeatNumber(int seatNumber) {
         this.seatNumber = seatNumber;
     }
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
+    }
 }
+
 

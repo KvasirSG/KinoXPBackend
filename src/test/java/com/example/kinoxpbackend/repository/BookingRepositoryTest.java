@@ -57,11 +57,11 @@ public class BookingRepositoryTest {
         Theatre testTheatre = new Theatre("Main Hall", 25, 16);
         theatreRepository.save(testTheatre);
 
-        testShow = new Show(testMovie, testTheatre, LocalDateTime.now().plusDays(1), 100);
+        testShow = new Show(testMovie, testTheatre, LocalDateTime.now().plusDays(1));
         showRepository.save(testShow);
 
-        Seat seat1 = new Seat(testTheatre, 1, 5);
-        Seat seat2 = new Seat(testTheatre, 1, 6);
+        Seat seat1 = new Seat(testShow, 1, 5);
+        Seat seat2 = new Seat(testShow, 1, 6);
         seatRepository.save(seat1);
         seatRepository.save(seat2);
 
@@ -85,7 +85,7 @@ public class BookingRepositoryTest {
 
     @Test
     void testSaveBooking() {
-        Seat seat3 = new Seat(testShow.getTheatre(), 2, 10);
+        Seat seat3 = new Seat(testShow, 2, 10);
         seatRepository.save(seat3);
 
         Set<Seat> newSeats = new HashSet<>();
@@ -130,5 +130,3 @@ public class BookingRepositoryTest {
         assertEquals("CANCELED", canceledBooking.get().getStatus());
     }
 }
-
-
