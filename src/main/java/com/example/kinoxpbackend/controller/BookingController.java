@@ -40,8 +40,13 @@ public class BookingController {
     }
 
     @PostMapping
-    public Booking createBooking(@RequestBody Booking booking) {
-        return bookingService.createBooking(booking);
+    public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
+        try {
+            Booking savedBooking = bookingService.createBooking(booking);
+            return ResponseEntity.ok(savedBooking);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PatchMapping("/cancel/{id}")
