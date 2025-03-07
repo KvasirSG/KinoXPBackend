@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -43,6 +44,12 @@ public class SeatController {
     public ResponseEntity<Void> deleteSeat(@PathVariable Long id) {
         seatService.deleteSeat(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/availability/{showId}")
+    public ResponseEntity<Map<String, List<Seat>>> getSeatsAvailabilityForShow(@PathVariable Long showId) {
+        Map<String, List<Seat>> seatAvailability = seatService.getSeatsAvailabilityForShow(showId);
+        return ResponseEntity.ok(seatAvailability);
     }
 }
 
