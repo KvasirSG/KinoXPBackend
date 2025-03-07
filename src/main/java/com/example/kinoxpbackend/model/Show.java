@@ -2,6 +2,7 @@ package com.example.kinoxpbackend.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "shows")
@@ -21,6 +22,9 @@ public class Show {
 
     @Column(nullable = false)
     private LocalDateTime showTime;
+
+    @OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
+    private List<Seat> seats;  // Seats now belong to the show
 
     // Constructors
     public Show() {}
@@ -62,6 +66,14 @@ public class Show {
 
     public void setShowTime(LocalDateTime showTime) {
         this.showTime = showTime;
+    }
+
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
     }
 }
 

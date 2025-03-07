@@ -52,4 +52,3 @@ public class CustomerRepositoryTest {
         assertFalse(deletedCustomer.isPresent());
     }
 }
-
