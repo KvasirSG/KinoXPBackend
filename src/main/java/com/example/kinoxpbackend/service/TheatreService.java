@@ -15,10 +15,9 @@ import java.util.Optional;
 public class TheatreService {
 
     private final TheatreRepository theatreRepository;
-    private final SeatRepository seatRepository;
-    public TheatreService(TheatreRepository theatreRepository, SeatRepository seatRepository) {
+
+    public TheatreService(TheatreRepository theatreRepository) {
         this.theatreRepository = theatreRepository;
-        this.seatRepository = seatRepository;
     }
 
     public List<Theatre> getAllTheatres() {
@@ -29,24 +28,9 @@ public class TheatreService {
         return theatreRepository.findById(id);
     }
 
-    public void deleteTheatre(Long id) {
-        theatreRepository.deleteById(id);
-    }
-
-    @Transactional
     public Theatre createTheatre(Theatre theatre) {
-        // Save the theatre first
-        Theatre savedTheatre = theatreRepository.save(theatre);
-
-        // Generate seats based on totalRows and seatsPerRow
-        List<Seat> seats = new ArrayList<>();
-        for (int row = 1; row <= theatre.getTotalRows(); row++) {
-            for (int seatNum = 1; seatNum <= theatre.getSeatsPerRow(); seatNum++) {
-                seats.add(new Seat(savedTheatre, row, seatNum));
-            }
-        }
-        seatRepository.saveAll(seats);
-        return savedTheatre;
+        return theatreRepository.save(theatre);
     }
 }
+
 
