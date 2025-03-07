@@ -39,7 +39,7 @@ public class ShowRepositoryTest {
         testTheatre = new Theatre("Main Hall", 25, 16);
         theatreRepository.save(testTheatre);
 
-        testShow = new Show(testMovie, testTheatre, LocalDateTime.now().plusDays(1), 100);
+        testShow = new Show(testMovie, testTheatre, LocalDateTime.now().plusDays(1));
         showRepository.save(testShow);
     }
 
@@ -52,10 +52,11 @@ public class ShowRepositoryTest {
 
     @Test
     void testSaveShow() {
-        Show show = new Show(testMovie, testTheatre, LocalDateTime.now().plusDays(2), 120);
+        LocalDateTime localDateTime = LocalDateTime.now().plusDays(2);
+        Show show = new Show(testMovie, testTheatre, localDateTime);
         Show savedShow = showRepository.save(show);
         assertNotNull(savedShow.getShowId());
-        assertEquals(120, savedShow.getAvailableSeats());
+        assertEquals(localDateTime, savedShow.getShowTime());
     }
 
     @Test
