@@ -14,8 +14,8 @@ public class Seat {
     @JoinColumn(name = "theatre_id", nullable = false)
     private Theatre theatre;
 
-    @Column(nullable = false)
-    private int rowNumber;
+    @Column(name = "row_index", nullable = false)  // 🔹 Renamed from "row_number"
+    private int rowIndex;
 
     @Column(nullable = false)
     private int seatNumber;
@@ -23,9 +23,9 @@ public class Seat {
     // Constructors
     public Seat() {}
 
-    public Seat(Theatre theatre, int rowNumber, int seatNumber) {
+    public Seat(Theatre theatre, int rowIndex, int seatNumber) {
         this.theatre = theatre;
-        this.rowNumber = rowNumber;
+        this.rowIndex = rowIndex;
         this.seatNumber = seatNumber;
     }
 
@@ -46,12 +46,12 @@ public class Seat {
         this.theatre = theatre;
     }
 
-    public int getRowNumber() {
-        return rowNumber;
+    public int getRowIndex() {
+        return rowIndex;
     }
 
-    public void setRowNumber(int rowNumber) {
-        this.rowNumber = rowNumber;
+    public void setRowIndex(int rowIndex) {
+        this.rowIndex = rowIndex;
     }
 
     public int getSeatNumber() {

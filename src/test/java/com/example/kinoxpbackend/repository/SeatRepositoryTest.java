@@ -45,21 +45,21 @@ public class SeatRepositoryTest {
         Seat seat = new Seat(testTheatre, 2, 10);
         Seat savedSeat = seatRepository.save(seat);
         assertNotNull(savedSeat.getSeatId());
-        assertEquals(2, savedSeat.getRowNumber());
+        assertEquals(2, savedSeat.getRowIndex());
     }
 
     @Test
     void testFindSeatById() {
         Optional<Seat> foundSeat = seatRepository.findById(testSeat.getSeatId());
         assertTrue(foundSeat.isPresent());
-        assertEquals(1, foundSeat.get().getRowNumber());
+        assertEquals(1, foundSeat.get().getRowIndex());
     }
 
     @Test
     void testFindSeatsByTheatre() {
         List<Seat> seats = seatRepository.findByTheatre_TheatreId(testTheatre.getTheatreId());
         assertFalse(seats.isEmpty());
-        assertEquals(1, seats.get(0).getRowNumber());
+        assertEquals(1, seats.get(0).getRowIndex());
     }
 
     @Test
