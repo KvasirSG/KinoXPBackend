@@ -26,10 +26,6 @@ public class SeatService {
         return seatRepository.findById(id);
     }
 
-    public List<Seat> getSeatsByTheatre(Long theatreId) {
-        return seatRepository.findByTheatre_TheatreId(theatreId);
-    }
-
     public Seat createSeat(Seat seat) {
         return seatRepository.save(seat);
     }

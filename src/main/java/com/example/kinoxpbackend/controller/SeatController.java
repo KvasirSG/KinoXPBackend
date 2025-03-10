@@ -30,11 +30,6 @@ public class SeatController {
         return seat.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/theatre/{theatreId}")
-    public List<Seat> getSeatsByTheatre(@PathVariable Long theatreId) {
-        return seatService.getSeatsByTheatre(theatreId);
-    }
-
     @PostMapping
     public Seat createSeat(@RequestBody Seat seat) {
         return seatService.createSeat(seat);
