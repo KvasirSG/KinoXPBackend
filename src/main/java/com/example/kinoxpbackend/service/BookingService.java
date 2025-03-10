@@ -1,8 +1,13 @@
 package com.example.kinoxpbackend.service;
 
 import com.example.kinoxpbackend.model.Booking;
+import com.example.kinoxpbackend.model.Seat;
 import com.example.kinoxpbackend.repository.BookingRepository;
+import com.example.kinoxpbackend.repository.SeatRepository;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -12,9 +17,11 @@ import java.util.stream.Collectors;
 public class BookingService {
 
     private final BookingRepository bookingRepository;
+    private final SeatRepository seatRepository;
 
-    public BookingService(BookingRepository bookingRepository) {
+    public BookingService(BookingRepository bookingRepository, SeatRepository seatRepository) {
         this.bookingRepository = bookingRepository;
+        this.seatRepository = seatRepository;
     }
 
     public List<Booking> getAllBookings() {
@@ -34,12 +41,22 @@ public class BookingService {
     }
 
     public Booking createBooking(Booking booking) {
-        Set<Long> seatIds = booking.getSeats().stream().map(seat -> seat.getSeatId()).collect(Collectors.toSet());
-
-        // Check if seats are already booked for this show
-        if (bookingRepository.existsByShow_ShowIdAndSeats_SeatIdIn(booking.getShow().getShowId(), seatIds)) {
-            throw new RuntimeException("One or more seats are already booked for this show.");
+        // Ensure all seats exist in DB before saving
+        Set<Seat> validSeats = new HashSet<>();
+        for (Seat seat : booking.getSeats()) {
+            Optional<Seat> existingSeat = seatRepository.findById(seat.getSeatId());
+            if (existingSeat.isEmpty() || existingSeat.get().isBooked()) {
+                throw new RuntimeException("One or more seats are already booked or invalid.");
+            }
+            existingSeat.get().setBooked(true); // Mark seat as booked
+            validSeats.add(existingSeat.get());
         }
+
+        // Set valid seats
+        booking.setSeats(validSeats);
+
+        // ✅ Ensure `bookingDate` is set before saving
+        booking.setBookingDate(LocalDateTime.now());
 
         return bookingRepository.save(booking);
     }

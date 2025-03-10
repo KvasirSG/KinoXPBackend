@@ -1,7 +1,11 @@
 package com.example.kinoxpbackend.controller;
 
+import com.example.kinoxpbackend.model.Movie;
 import com.example.kinoxpbackend.model.Show;
+import com.example.kinoxpbackend.model.Theatre;
+import com.example.kinoxpbackend.service.MovieService;
 import com.example.kinoxpbackend.service.ShowService;
+import com.example.kinoxpbackend.service.TheatreService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +18,13 @@ import java.util.Optional;
 public class ShowController {
 
     private final ShowService showService;
+    private final MovieService movieService;
+    private final TheatreService theatreService;
 
-    public ShowController(ShowService showService) {
+    public ShowController(ShowService showService, MovieService movieService, TheatreService theatreService) {
         this.showService = showService;
+        this.movieService = movieService;
+        this.theatreService = theatreService;
     }
 
     @GetMapping
@@ -46,8 +54,21 @@ public class ShowController {
     }
 
     @PostMapping
-    public Show createShow(@RequestBody Show show) {
-        return showService.createShow(show);
+    public ResponseEntity<Show> createShow(@RequestBody Show show) {
+        // Fetch full Movie and Theatre objects via service layer
+        Optional<Movie> movie = movieService.getMovieById(show.getMovie().getMovieId());
+        Optional<Theatre> theatre = theatreService.getTheatreById(show.getTheatre().getTheatreId());
+
+        if (movie.isEmpty() || theatre.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        // Set the retrieved movie and theatre before saving
+        show.setMovie(movie.get());
+        show.setTheatre(theatre.get());
+
+        Show savedShow = showService.createShow(show);
+        return ResponseEntity.ok(savedShow);
     }
 
     @DeleteMapping("/{id}")
