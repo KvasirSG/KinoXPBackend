@@ -1,5 +1,6 @@
 package com.example.kinoxpbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,7 @@ public class Seat {
 
     @ManyToOne
     @JoinColumn(name = "show_id", nullable = false)
+    @JsonIgnore // Prevents infinite recursion
     private Show show;
 
     @Column(nullable = false)
