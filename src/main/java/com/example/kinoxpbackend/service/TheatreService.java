@@ -31,6 +31,10 @@ public class TheatreService {
     public Theatre createTheatre(Theatre theatre) {
         return theatreRepository.save(theatre);
     }
+
+    public void deleteTheatre(Long id) {
+        theatreRepository.deleteById(id);
+    }
 }
 
 
