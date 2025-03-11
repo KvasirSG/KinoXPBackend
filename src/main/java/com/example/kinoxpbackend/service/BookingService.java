@@ -62,12 +62,23 @@ public class BookingService {
     }
 
     public void cancelBooking(Long id) {
-        Optional<Booking> booking = bookingRepository.findById(id);
-        if (booking.isPresent()) {
-            Booking updatedBooking = booking.get();
-            updatedBooking.setStatus("CANCELED");
-            bookingRepository.save(updatedBooking);
+        Optional<Booking> bookingOpt = bookingRepository.findById(id);
+        if (bookingOpt.isPresent()) {
+            Booking booking = bookingOpt.get();
+
+            // ✅ Mark all booked seats as available again
+            for (Seat seat : booking.getSeats()) {
+                seat.setBooked(false);
+                seatRepository.save(seat);
+            }
+
+            // ✅ Update booking status to "CANCELED"
+            booking.setStatus("CANCELED");
+            bookingRepository.save(booking);
+        } else {
+            throw new RuntimeException("Booking not found with ID: " + id);
         }
     }
+
 }
 
